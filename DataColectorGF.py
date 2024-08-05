@@ -20,15 +20,16 @@ try:
         EC.presence_of_element_located((By.CSS_SELECTOR, 'div.Vd323d[role="main"]'))
     )
 
-    # Extrair todas as informações dentro da <div>
-    currency_elements = main_div.find_elements(By.CSS_SELECTOR, 'div.Vd323d div')
+    # Extrair todas as informações dentro da <div> com classes 'ZvmM7' e 'YMlKec'
+    zvm_elements = main_div.find_elements(By.CSS_SELECTOR, 'div.ZvmM7')
+    yml_elements = main_div.find_elements(By.CSS_SELECTOR, 'div.YMlKec')
 
     # Coletar dados das moedas
     data = []
-    for element in currency_elements:
+    for zvm, yml in zip(zvm_elements, yml_elements):
         try:
-            currency_name = element.find_element(By.CSS_SELECTOR, 'span').text
-            currency_value = element.find_element(By.CSS_SELECTOR, 'div div').text
+            currency_name = zvm.text
+            currency_value = yml.text
             data.append({
                 'Currency Name': currency_name,
                 'Currency Value': currency_value
