@@ -6,6 +6,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 import pandas as pd
 from datetime import datetime
+from openpyxl import load_workbook
+from openpyxl.utils.dataframe import dataframe_to_rows
 
 # Configurar o webdriver
 service = Service(ChromeDriverManager().install())
@@ -58,10 +60,13 @@ try:
     # Nome do arquivo com a data de hoje
     filename = f'google_finance_currencies_{today_date}.xlsx'
 
-    # Salvar os dados em um arquivo Excel
-    df.to_excel(filename, index=False)
+    # Salvar os dados em um arquivo Excel com uma aba inicial
+    df.to_excel(filename, index=False, sheet_name=today_date)
 
-    print(f'Dados salvos em {filename}')
+    # Carregar o arquivo Excel existente
+    wb = load_workbook(filename)
+
+    print(f'Dados salvos em {filename}, aba criada com o nome {today_date}')
 
 finally:
     # Fechar o navegador
