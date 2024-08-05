@@ -52,13 +52,14 @@ try:
     # Obter a data e hora atuais
     today_date = datetime.today().strftime('%Y-%m-%d')
     current_time = datetime.today().strftime('%H:%M:%S')
+    current_hour = datetime.today().strftime('%H-%M')
 
     # Adicionar colunas de data e hora ao DataFrame
     df['Date'] = today_date
     df['Time'] = current_time
 
     # Nome do arquivo com a data de hoje
-    filename = f'google_finance_currencies_{today_date}.xlsx'
+    filename = f'google_finance_currencies_{today_date}_{current_hour}.xlsx'
 
     # Salvar os dados em um arquivo Excel com uma aba inicial
     df.to_excel(filename, index=False, sheet_name=today_date)
