@@ -32,20 +32,33 @@ try:
             currency_name = zvm.text
             currency_value = yml.text
             data.append({
-                'Currency Name': currency_name,
+                'Currency Pair': currency_name,
                 'Currency Value': currency_value
             })
         except Exception as e:
             print(f"Erro ao extrair informações de um elemento: {e}")
 
-    # Obter a data de hoje no formato desejado
+    # Criar DataFrame a partir dos dados
+    df = pd.DataFrame(data)
+
+    # Separar a coluna 'Currency Pair' em duas colunas: 'From Currency' e 'To Currency'
+    df[['From Currency', 'To Currency']] = df['Currency Pair'].str.split(' / ', expand=True)
+
+    # Remover a coluna original 'Currency Pair'
+    df.drop(columns=['Currency Pair'], inplace=True)
+
+    # Obter a data e hora atuais
     today_date = datetime.today().strftime('%Y-%m-%d')
+    current_time = datetime.today().strftime('%H:%M:%S')
+
+    # Adicionar colunas de data e hora ao DataFrame
+    df['Date'] = today_date
+    df['Time'] = current_time
 
     # Nome do arquivo com a data de hoje
     filename = f'google_finance_currencies_{today_date}.xlsx'
 
     # Salvar os dados em um arquivo Excel
-    df = pd.DataFrame(data)
     df.to_excel(filename, index=False)
 
     print(f'Dados salvos em {filename}')
