@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 import pandas as pd
+from datetime import datetime
 
 # Configurar o webdriver
 service = Service(ChromeDriverManager().install())
@@ -37,11 +38,17 @@ try:
         except Exception as e:
             print(f"Erro ao extrair informações de um elemento: {e}")
 
+    # Obter a data de hoje no formato desejado
+    today_date = datetime.today().strftime('%Y-%m-%d')
+
+    # Nome do arquivo com a data de hoje
+    filename = f'google_finance_currencies_{today_date}.xlsx'
+
     # Salvar os dados em um arquivo Excel
     df = pd.DataFrame(data)
-    df.to_excel('google_finance_currencies.xlsx', index=False)
+    df.to_excel(filename, index=False)
 
-    print('Dados salvos em google_finance_currencies.xlsx')
+    print(f'Dados salvos em {filename}')
 
 finally:
     # Fechar o navegador
