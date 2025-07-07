@@ -35,17 +35,23 @@ RUN apt-get update && apt-get install -y \
     # Limpa o cache e arquivos temporários para reduzir o tamanho da imagem
     && rm -rf /var/lib/apt/lists/* /tmp/chromedriver.zip /tmp/chromedriver-linux64
 
+# Cria um usuário não-root para executar a aplicação de forma mais segura
+RUN useradd -ms /bin/bash appuser
+
 # Define o diretório de trabalho dentro do contêiner
-WORKDIR /app
+WORKDIR /home/appuser/app
 
 # Copia o arquivo de dependências primeiro para aproveitar o cache do Docker
-COPY . .
+COPY --chown=appuser:appuser requirements.txt .
 
 # Instala as dependências do Python
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copia o restante do código do projeto para o diretório de trabalho
-COPY . .
+COPY --chown=appuser:appuser . .
+
+# Muda para o usuário não-root
+USER appuser
 
 # Comando para executar a sua aplicação
 # Lembre-se de substituir 'seu_script.py' pelo nome do seu arquivo principal

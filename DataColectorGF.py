@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -9,9 +10,15 @@ from datetime import datetime
 from openpyxl import load_workbook
 from openpyxl.utils.dataframe import dataframe_to_rows
 
+# Configura as opções do Chrome para execução em contêiner
+chrome_options = Options()
+chrome_options.add_argument("--headless")  # Executa o Chrome em modo headless (sem interface gráfica)
+chrome_options.add_argument("--no-sandbox") # Desativa a sandbox, necessário ao rodar como root
+chrome_options.add_argument("--disable-dev-shm-usage") # Supera limitações de recursos de memória compartilhada em contêineres
+
 # Configurar o webdriver
-service = Service(ChromeDriverManager().install())
-driver = webdriver.Chrome(service=service)
+service = Service() # Assumindo que o chromedriver está no PATH
+driver = webdriver.Chrome(service=service, options=chrome_options)
 
 # Acessar a página do Google Finance
 driver.get('https://www.google.com/finance/markets/currencies')
