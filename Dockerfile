@@ -50,6 +50,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copia o restante do código do projeto para o diretório de trabalho
 COPY --chown=appuser:appuser . .
 
+# Garante que o usuário 'appuser' seja o dono do diretório de trabalho para poder criar arquivos
+RUN chown -R appuser:appuser /home/appuser/app
+
 # Muda para o usuário não-root
 USER appuser
 

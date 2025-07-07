@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  data-collector:
+    # Constrói a imagem a partir do Dockerfile no diretório atual
+    build:
+      context: .
+      dockerfile: Dockerfile
+    
+    # Nome do contêiner para facilitar a identificação
+    container_name: economic101_data_collector
+    
+    # Mapeia a pasta 'output' local para o diretório de trabalho do contêiner
+    # Os arquivos .xlsx gerados serão salvos aqui
+    volumes:
+      - ./output:/home/appuser/app
