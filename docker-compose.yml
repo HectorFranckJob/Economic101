@@ -13,4 +13,4 @@ services:
     # Mapeia a pasta 'output' local para o diretório de trabalho do contêiner
     # Os arquivos .xlsx gerados serão salvos aqui
     volumes:
-      - ./output:/home/appuser/app
+      - ./output:/home/appuser/app/output

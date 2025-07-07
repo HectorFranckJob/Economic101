@@ -7,6 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 import pandas as pd
 from datetime import datetime
+import os
 
 # Configura as opções do Chrome para execução em contêiner
 chrome_options = Options()
@@ -63,13 +64,18 @@ try:
     df['Date'] = today_date
     df['Time'] = current_time
 
+    # Define o diretório de saída e o cria se não existir
+    output_dir = "output"
+    os.makedirs(output_dir, exist_ok=True)
+
     # Nome do arquivo com a data de hoje
-    filename = f'google_finance_currencies_{today_date}_{current_hour}.xlsx' # O arquivo será salvo no diretório de trabalho /home/appuser/app
+    filename = f'google_finance_currencies_{today_date}_{current_hour}.xlsx'
+    filepath = os.path.join(output_dir, filename)
 
     # Salvar os dados em um arquivo Excel
-    df.to_excel(filename, index=False)
+    df.to_excel(filepath, index=False)
     
-    print(f'Dados salvos em {filename}')
+    print(f'Dados salvos em {filepath}')
 
 finally:
     # Fechar o navegador
